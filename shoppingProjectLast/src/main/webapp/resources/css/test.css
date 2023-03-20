@@ -1,0 +1,77 @@
+@charset "UTF-8";
+/* 로고 부분 */
+.navbar-fixed-top {
+	background-color: #FFF;
+}
+#navLogo {
+	text-align: center;
+	padding-top: 20px;
+}
+#navLogo a {
+	font-size: 30px;
+	color: #000;
+}
+#navLogo span {
+	background-color: #000;
+}
+
+/* 로그인 회원가입 부분 */
+#navLogin {
+	height: 32px;
+}
+#navLogin > ul {
+	margin: 0 40px 0 0;
+}
+#navLogin > ul > li {
+	display: inline-block;
+	margin: 0 10px 0 10px;
+}
+#navLogin > ul > li a {
+	color: #000;
+}
+#navLogin > ul > li a:hover {
+	text-decoration: none;
+}
+#dropdownLogin > ul {
+	text-align: center;
+	padding-bottom: 0;
+}
+#dropdownLogin > ul a {
+	letter-spacing: 10px;
+	border-bottom: 0.5px dotted #cccccc;
+}
+.noneLogInNav {
+	margin: 0 !important;
+	padding: 0 10px 0 10px;
+	font-size: 16px;
+}
+#noneLogInA {
+	padding-right: 13px;
+	border-right: 1px solid #cccccc;
+}
+.noneLogInNav > a:hover {
+	border-bottom: 1px solid #000 !important;
+}
+
+/* 메뉴 부분 */
+#navMenu {
+	justify-content:center;
+	margin: 0 auto 0 auto;
+}
+#navMenu ul > li {
+	display: inline-block;
+	margin:  0;
+	padding: 0;
+}
+#navMenu ul > li > a {
+	color: #000;
+	font-size: 20px;
+	padding: 20px 50px 20px 50px;
+}
+#menu1 {
+	margin-left: 20px;
+}
+#menu1 > ul a {
+	font-size: 17px;
+	padding: 0 10px 0 30px !important;
+}

@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+      PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+   
+<mapper namespace="com.edu.product">
+
+	<!-- 장바구니 업데이트 조건 -->
+	<sql id="cartUpdate">
+		<if test="product_size != null">
+			product_size = #{product_size}
+		</if>
+		<if test="product_amount != 0">
+			product_amount = #{product_amount}
+		</if>
+	</sql>
+	
+	<!-- 해당 회원의 장바구니 리스트 보내주기 -->
+	<select id="cartList" resultType="com.edu.product.dto.CartDTO">
+		<![CDATA[
+		SELECT c.cart_num, c.product_code, p.product_name, p.product_price, c.product_amount, c.product_size
+		FROM t_product p , t_cart c
+		WHERE p.product_code = c.product_code and c.userID = #{userID};
+		]]>
+	</select>
+
+	<!-- 장바구니 데이터 넣기 -->
+	<insert id="addCart" parameterType="com.edu.product.dto.CartDTO">
+		<![CDATA[
+		INSERT INTO t_cart (cart_num, userID, product_code, product_amount, product_size)
+		SELECT IFNULL(MAX(cart_num), 0) + 1, #{userID}, #{product_code}, #{product_amount}, #{product_size} FROM t_cart
+		]]>
+	</insert>
+	
+	<!-- 해당 장바구니 번호의 장바구니 정보 보내주기 -->
+	<select id="cartNumList" parameterType="Integer" resultType="com.edu.product.dto.CartDTO">
+		<![CDATA[
+		SELECT c.cart_num, c.userID, c.product_code, p.product_name, p.product_price, c.product_amount, c.product_size
+		FROM t_product p , t_cart c
+		WHERE p.product_code = c.product_code and c.cart_num = #{cartNum};
+		]]>
+	</select>
+	
+	<!-- 해당 상품, 해당 회원의 장바구니 번호 보내주기 -->
+	<select id="getCartNum" parameterType="com.edu.product.dto.CartDTO" resultType="Integer">
+		<![CDATA[
+		SELECT cart_num
+		FROM t_cart 
+		WHERE product_code = #{product_code} and userID = #{userID};
+		]]>
+	</select>
+	
+	<!-- 해당 상품, 해당 회원의 장바구니 유무 확인 -->
+	<select id="cartCount" parameterType="com.edu.product.dto.CartDTO" resultType="Integer">
+		<![CDATA[
+		SELECT COUNT(*) FROM t_cart WHERE product_code = #{product_code} and userID = #{userID};
+		]]>		
+	</select> 
+	
+	<!-- 해당 장바구니 번호 삭제하기 -->
+	<delete id="cartDelete" parameterType="Integer">
+		<![CDATA[
+			DELETE FROM t_cart WHERE cart_num = #{cartNum}
+		]]>		
+	</delete>
+	
+	<!-- 해당 상품이 담긴 장바구니 삭제하기 -->
+	<delete id="cartDeleteByCode" parameterType="String">
+		<![CDATA[
+			DELETE FROM t_cart WHERE product_code = #{product_code}
+		]]>		
+	</delete>	
+		
+	<!-- 날짜에 해당하는 주문건수 구하기 -->
+	<select id="orderDateCount" parameterType="String" resultType="Integer">
+		<![CDATA[
+		SELECT COUNT(*) FROM t_order WHERE order_date LIKE CONCAT('%', #{date}, '%')
+		]]>
+	</select>
+	
+	<!-- 가장 큰 주문완료번호 구하기 -->
+	<select id="getMaxOrderNum" resultType="Long">
+		<![CDATA[
+		SELECT MAX(order_num) + 1 FROM t_order
+		]]>
+	</select>		
+	
+	<!-- 주문 완료 테이블에 데이터 등록하기 -->
+	<insert id="addOrder" parameterType="com.edu.product.dto.OrderDTO">
+		<![CDATA[
+		INSERT INTO t_order (order_num, userID, order_date, address1, address2, postnum, order_name, order_phone, order_memo, paymethod, totalbill)
+		VALUES (#{order_num}, #{userID}, now(), #{address1}, #{address2}, #{postnum}, #{order_name}, #{order_phone}, #{order_memo}, #{paymethod}, #{totalbill})
+		]]>
+	</insert>	
+	
+	<!-- 주문 완료 상품 테이블에 데이터 등록하기 -->
+	<insert id="addOrderProduct" parameterType="com.edu.product.dto.OrderDTO">
+		<![CDATA[
+		INSERT INTO t_orderProduct (orderProduct_num, order_num, userID, product_code, product_amount, product_size, review_yn)
+		SELECT IFNULL(MAX(orderProduct_num), 0) + 1, #{order_num}, #{userID}, #{product_code}, #{product_amount}, #{product_size}, #{review_yn} FROM t_orderProduct
+		]]>
+	</insert>	
+	
+	<!-- 해당 주문 완료 번호의 t_order의 orderDTO 가져오기 -->
+	<select id="getOrderDTO" resultType="com.edu.product.dto.OrderDTO">
+		<![CDATA[
+		SELECT *
+		FROM t_order
+		WHERE order_num = #{order_num}
+		ORDER BY order_date DESC
+		]]>
+	</select>
+	
+	<!-- 주문 완료 번호와 상품 코드에 해당하는 t_orderProduct의 orderDTO 가져오기 -->
+	<select id="getOrderDetailDTO" parameterType="com.edu.product.dto.OrderDTO" resultType="com.edu.product.dto.OrderDTO">
+		<![CDATA[
+		SELECT op.order_num, op.product_code, op.product_amount, op.product_size, p.product_name
+		FROM t_orderProduct op, t_product p
+		WHERE op.product_code = p.product_code and op.order_num = #{order_num} and op.product_code = #{product_code}
+		]]>
+	</select>	
+	
+		<!-- 해당 주문 완료 번호의 t_orderProduct의 orderDTO 리스트 가져오기 -->
+	<select id="getOrderDTODetail" resultType="com.edu.product.dto.OrderDTO">
+		<![CDATA[
+		SELECT op.order_num, op.userID, op.orderProduct_num, op.product_code, op.product_amount,  op.product_size, 
+		p.product_name, p.product_price, op.review_yn
+		FROM t_orderProduct op, t_product p 
+		WHERE op.product_code = p.product_code and op.order_num = #{order_num}
+		]]>
+	</select>
+	
+	<!-- 회원 아이디에 해당하는 주문번호 전부 가져오기 -->
+	<select id="getOrderNum" resultType="Long">
+		<![CDATA[
+		SELECT order_num FROM t_order WHERE userID = #{userID} ORDER BY order_date DESC
+		]]>
+	</select>
+	
+	<!-- 장바구니 정보 수정하기 -->		
+	<update id="cartUpdate" parameterType="com.edu.product.dto.CartDTO">
+		<![CDATA[
+		UPDATE t_cart
+		SET
+		]]>
+		<include refid="cartUpdate"/>
+		<![CDATA[
+		WHERE cart_num = #{cart_num}
+		]]>
+	</update>
+	
+	<!-- 회원 아이디에 해당하는 t_orderProduct 리스트 구하기 -->
+	<select id="getOrderDetailById" parameterType="String" resultType="com.edu.product.dto.OrderDTO">
+		<![CDATA[
+		SELECT * FROM t_orderProduct WHERE userID = #{userID}
+		]]>
+	</select>
+	
+	<!-- 전체 t_order 리스트 구하기 -->
+	<select id="orderTotalList" resultType="com.edu.product.dto.OrderDTO">
+		<![CDATA[
+		SELECT * FROM t_order ORDER BY order_date DESC
+		]]>
+	</select>
+
+	<!-- 지난달 매출 리스트 구하기 -->
+	<select id="monthBill" parameterType="String" resultType="Long">
+		<![CDATA[
+		SELECT IFNULL(totalbill, 0) FROM t_order 
+		WHERE order_date LIKE CONCAT('%', #{month}, '%');
+		]]>
+	</select>	
+	
+	<!-- 연령대에 따른 월별 매출액 구하기 -->
+	<select id="ageMonthBill" parameterType="HashMap" resultType="Long">
+		<![CDATA[
+		SELECT IFNULL(SUM(totalbill), 0) FROM t_member m, t_order o
+		WHERE m.userID = o.userID
+		AND order_date LIKE CONCAT('%' #{month} '%')
+		AND age BETWEEN #{firstAge} AND #{lastAge};
+		]]>
+	</select>
+	
+</mapper>

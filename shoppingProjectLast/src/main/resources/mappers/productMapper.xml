@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+      PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+   
+<mapper namespace="com.edu.product">
+
+	<!-- 정렬조건 -->
+	<sql id="array">
+		<if test="array_type != null">
+			<if test="array_type == 'r'.toString()">
+				ORDER BY product_date DESC
+			</if>
+			<if test="array_type == 'o'.toString()">
+				ORDER BY product_date
+			</if>
+			<if test="array_type == 'p'.toString()">
+				ORDER BY star_avg DESC
+			</if>
+		</if>
+	</sql>
+	
+	<!-- 검색조건 -->
+	<sql id="search">
+		<if test="searchType != null">
+				AND product_name LIKE CONCAT('%', #{keyword}, '%')
+			
+		</if>
+	</sql>
+	
+	<!-- Type별 List 불러오기 + 정렬 + 검색 -->
+	<select id="typeList" parameterType="com.edu.common.util.ArrayCriteria" resultType="com.edu.product.dto.ProductDTO">
+		<![CDATA[
+		SELECT product_code, product_price, product_date, product_name, star_avg
+		FROM (SELECT product_code, product_price, product_date, product_name, star_avg, 
+		ROW_NUMBER() OVER(
+		]]>
+		<include refid="array"/>
+		<![CDATA[
+		) AS rNUM FROM t_product WHERE product_type = #{product_type}
+		]]>
+		<include refid="search"/>
+		<![CDATA[
+		) bpd
+		WHERE rNUM BETWEEN (#{perPageNum} * #{page} - 11) and (#{perPageNum} * #{page})
+		]]>
+		
+	</select>
+	
+	<!-- 검색 조건에 해당하는 리스트 가져오기 
+	<select id="searchList" parameterType="com.edu.common.util.SearchCriteria" resultType="com.edu.product.dto.ProductDTO">
+		<![CDATA[
+		SELECT product_code, product_price, product_date, product_name, star_avg
+		FROM (SELECT product_code, product_price, product_date, product_name, star_avg, 
+		ROW_NUMBER() OVER(ORDER BY product_code desc) AS rNUM FROM t_product
+		]]>
+		<include refid="search"/>
+		<![CDATA[
+		) bpd
+		WHERE rNUM BETWEEN (#{perPageNum} * #{page} - 11) and (#{perPageNum} * #{page})
+		ORDER BY product_code DESC;
+		]]>
+	</select>
+	-->
+	
+	
+	<!-- Type 별 전체 데이터 갯수 + 검색 -->
+	<select id="totalCount" parameterType="com.edu.common.util.ArrayCriteria" resultType="Integer">
+		<![CDATA[
+		SELECT COUNT(*) FROM t_product WHERE product_type = #{product_type} and 1 = 1
+		]]>
+		<include refid="search"/>
+	</select>
+		
+	<!-- Type별 게시글 전체 갯수  
+	<select id="totalCount" parameterType="String" resultType="Integer">
+		<![CDATA[
+		SELECT COUNT(*) FROM t_product WHERE product_type = #{type} and 1 = 1;
+		]]>
+	</select>
+	-->
+	
+	<!-- 전체 상품 List 불러오기 -->
+	<select id="allList" parameterType="String" resultType="com.edu.product.dto.ProductDTO">
+		<![CDATA[
+		SELECT * FROM t_product ORDER BY product_date DESC;
+		]]>
+	</select>
+	
+	<!-- 상품  상세 정보 불러오기 -->
+	<select id="detail" resultType="com.edu.product.dto.ProductDTO">
+		<![CDATA[
+		SELECT * FROM t_product WHERE product_code = #{pdCode};
+		]]>
+	</select>
+	
+	<!-- 상품 이미지 리스트 -->
+	<select id="images" resultType="com.edu.product.dto.ImagesDTO">
+		<![CDATA[
+		SELECT * FROM t_images WHERE product_code = #{pdCode};
+		]]>
+	</select>
+	
+	<!-- 상품 타입에 해당하는 가장 최근 상품 코드 구하기 -->
+	<select id="getProductCode" parameterType="String" resultType="String">
+		<![CDATA[
+		SELECT product_code FROM t_product WHERE product_type = #{product_type} ORDER BY product_code DESC LIMIT 1
+		]]>	
+	</select>
+	
+	<!-- 상품 등록하기 -->
+	<insert id="productRegister" parameterType="com.edu.product.dto.ProductDTO">
+		<![CDATA[
+			INSERT INTO t_product (product_code, product_type, product_price, product_name, product_date, star_sum, review_count, star_avg)
+			VALUES (#{product_code}, #{product_type}, #{product_price}, #{product_name}, now(), 0, 0, 0)
+		]]>		
+	</insert>
+	
+	<!-- 상품 이미지 등록하기 -->
+	<insert id="imagesRegister" parameterType="com.edu.product.dto.ImagesDTO">
+		<![CDATA[
+			INSERT INTO t_images
+			VALUES (#{product_code}, #{images01}, #{images02}, #{images03}, #{images04}, #{images05})
+		]]>		
+	</insert>
+	
+	<!-- 이미지 테이블 업데이트 하기 -->
+	<update id="imagesUpdate" parameterType="com.edu.product.dto.ImagesDTO">
+		<![CDATA[
+			UPDATE t_images
+			SET product_code = #{product_code}, images01 = #{images01}, images02 = #{images02}
+			, images03 = #{images03}, images04 = #{images04}, images05 = #{images05}
+			WHERE product_code = #{product_code}
+		]]>	
+	</update>
+	
+	<!-- 상품 코드에 해당하는 상품 데이터 삭제하기 -->
+	<delete id="productDelete" parameterType="String">
+		<![CDATA[
+			DELETE FROM t_product WHERE product_code = #{product_code}
+		]]>		
+	</delete>
+	
+	<!-- 상품 코드에 대한 상품 정보 수정하기 -->
+	<update id="productUpdate" parameterType="com.edu.product.dto.ProductDTO">
+		<![CDATA[
+			UPDATE t_product
+			SET product_name = #{product_name}, product_price = #{product_price}, product_type = #{product_type}
+			WHERE product_code = #{product_code}
+		]]>		
+	</update>
+</mapper>

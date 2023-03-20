@@ -1,0 +1,319 @@
+@charset "UTF-8";
+/* productList */
+
+.container {
+	min-height: 500px;
+}
+.arraybox {
+   justify-content: center;   
+   width : 10%;
+   height: 20px;
+   margin-right: 50px;
+   z-index:5;
+   cursor:pointer;
+   position:relative;
+   float:right;
+}
+.producbox {
+	display : flex;
+	justify-content: center;
+	width:60%;	
+}
+#pagingunderbar {
+	width:100%; !important;
+}
+.productList td:hover {
+	background-color: #b4b4b4;
+}
+.productList td {
+	height: 400px;
+
+}
+
+.listbox {
+	width : 150px;
+	height: 20px;
+	margin: auto;
+}
+/*select array option*/
+  li {
+  	list-style:none;
+  }
+ #arrayOption2 {
+ 	display:none;
+ 	padding:0;
+ }
+ .pdsmarray:hover {
+ 	background-color:#dcdcdc;
+ 	color:#464646;
+ }
+/**/
+.productlist {
+	margin-bottom:60px;
+}
+.productList  td {
+	width: 450px;
+	height: 360px;
+	padding: 15px;
+	text-align: left;
+}
+.productList .im {
+	width: 300px;
+	height: 360px;
+}
+.productList img {
+	width: 300px;
+	height: 360px;
+	object-fit: contain;
+}
+.productList a {
+	color: #000;
+}
+/* productDetail */
+.carousel-control {
+	background-image: none !important;
+}
+.carousel-control:hover {
+	background-image: none;
+}
+#pdDetailTable {
+	width: 500px;
+}
+#pdDetailTable tr th {
+	margin-bottom: 10px;
+	border-bottom: 0.5px solid #cbcccf;
+}
+#pdDetailTable tr th > * {
+	margin-right: 5px;
+	display: inline-block;
+}
+.pdDetailTr {
+	height: 30px;
+}
+#pdDetailTable tr td p{
+	display: inline-block;
+}
+#pdDetailTable tr td a {
+	color: blue;
+	font-weight: bold;
+}
+.tdTitle {
+	width: 150px;
+}
+.pdDetailTrSelect {
+	height: 40px;
+	
+}
+.pdDetailTrSelect select {
+	width: 240px;
+	height: 30px;
+}
+.checked {
+	color: orange;
+}
+#pdDetailTable tr td button {
+	width: 110px;
+	margin-left: 5px;
+}
+#pdDetailTable tr td img {
+	width: 500px;
+	height: auto;
+}
+#totalline {
+	align:left;
+	padding-bottom:0;
+}
+#total {
+	font-size: 0.8em;
+	color:#464646;
+}
+#totaltext {
+	font-size: 1.2em;
+	text-align:left;
+}
+#product_totalprice {
+	display:none;
+}
+#showreview:visited ,#showreview:link{
+	color:#787878;
+	text-decoration:none
+}
+#showreview:hover {
+	color:black;
+}
+#addcartBtn {
+	padding-right:320px;
+	padding-left:180px;
+	margin-bottom:10px;
+	text-align:center;
+	color:black;
+	background-color:#dcdcdc;
+	font-weight: bold;
+}
+#nocartBtn {
+	padding-right:300px;
+	padding-left:200px;
+	margin-bottom:10px;
+	text-align:center;
+	color:#dcdcdc;
+	background-color:black;
+	font-weight: bold;
+}
+
+/*리뷰부분*/
+#reviewcontainer table {
+	width: 80%;
+	margin: 50px auto auto auto;
+}
+#detailReviewRegTh > * {
+	display: inline-block;
+}
+#detailReviewRegTd {
+	padding-bottom: 10px;
+}
+#detailReviewRegTd > input {
+	display: inline-block;
+	width: 60%;
+}
+#detailReviewRegTd > select {
+	display: inline-block;
+	width: 10%;
+}
+.productDetailReviewContent {
+	display:none;
+}
+.productDetailReviewContent td {
+	padding-left: 10px
+}
+#detailReviewTh10 {
+	width: 10%;
+}
+#detailReviewTh20 {
+	width: 20%;
+}
+.detailReviewTh5 {
+	width: 5%;
+	text-align: center;
+}
+/* productMenu */
+.nav-pills {
+	position: fixed;
+}
+.nav-pills a {
+	color: #000;
+}
+.nav-pills .active a {
+	background-color: #000 !important;
+}
+.pdMenufrm span {
+	font-size: 15px;
+	margin-right: 5px;
+}
+.pdMenufrm  p {
+	font-size: 15px;
+}
+.pdMenufrm button {
+	margin-left: 5px;
+}
+.pdMenufrm a {
+	color: #000;
+}
+.productMenuDateTh {
+	font-size: 12px;
+}
+.productMenuDelteBtnTh {
+	width: 8%;
+	text-align: center;
+	font-size: 12px;
+	padding: 0;
+}
+/* productSearchForm */
+#searchTitle {
+	text-align: center;
+	margin-top: 50px;
+}
+#searchTitle span {
+	font-size: 30px;
+}
+#searchSubTitle h4 {
+	text-align: center;
+}
+#searchBox {
+	margin-top: 50px;
+	margin-bottom: 80px;
+	text-align: center;	
+}
+#searchBox div {
+	display: inline-block;
+}
+#searchBox select {
+	height: 40px;
+	width: 170px;
+	font-size: 18px;
+	text-align: center;
+	border-radius: 7px;
+	margin-right: 20px;
+}
+#searchBox input {
+	height: 40px;
+	width: 400px;
+	font-size: 18px;
+	border : none;
+	border-bottom : 4px solid black;
+	margin-right: 0px;
+	margin-bottom: 0;
+}
+#searchBox button {
+	border: none;
+	background-color: white;
+	height: 40px;
+	width: 50px;
+	margin: 0;
+	font-size: 20px;
+}
+#recommendOption {
+	text-align: center;
+	margin-bottom: 50px;
+}
+#recommendOption > div {
+	display: inline-block;
+	width: 15%;
+}
+#recommendBlank {
+	margin-left: 10px;
+	margin-right: 10px;
+}
+#recommendSlide td {
+	width: 25%;
+	padding: 5px;
+}
+#recommendSlide td img {
+	width: auto;
+	height: 330px;
+	object-fit: contain;
+}
+/* productRegisterForm */
+#pdRegTable {
+	margin: auto;
+	border-top:  1px solid #cbcccf;
+	border-bottom:  1px solid #cbcccf;
+	margin-bottom: 50px;
+	width: 50%;
+}
+.pdRegTr {
+	height: 40px;
+}
+.pdRegTr input {
+	width: 100%;
+}
+.pdRegTr select {
+	width: 100%;
+	height: 30px;
+}
+.pdRegTr > td > h1 {
+	margin: 0 45px 0 0;
+	width: 150px;
+}
+#pdRegTrBtn td > * {
+	display: inline-block;
+}

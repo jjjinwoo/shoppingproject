@@ -1,0 +1,82 @@
+@charset "UTF-8";
+/* main */
+.container {
+	min-height: 500px;
+}
+.mainContainer {
+	justify-content: center;
+	width: 1500px;
+}
+.img-responsive {
+	width : 80%;
+	height : 300px;
+	z-index: -1;
+}
+/* concept */
+.conceptbox {
+	text-align: center;
+	margin-bottom: 50px;
+}
+.conceptbox h3 {
+	display: inline-block;
+	background-color: #000;
+	color: #FFF;
+	height: 35px;
+	padding: 5px 10px 5px 10px;
+	margin-bottom: 25px;
+}
+/* info, use */
+.infouse {
+	width: 800px;
+	margin: auto;
+	font-size: 17px;
+}
+.infouseA {
+	color: #000;
+}
+.infouseA:hover {
+	text-decoration: none;
+	border-bottom: 2px solid #000;
+	color: #000;
+}
+.infouse p {
+	margin: 0;
+}
+/* styleList */
+.stylebox {
+	display: flex;
+  	justify-content:center; 
+}
+.stylebox td {
+	text-align: center;
+	padding : 5px 5px 20px 5px;
+	font-size: 17px;
+}
+.stylebox th {
+	padding : 10px;
+}
+.stylebox img {
+	width: 378.91px;
+	height: 213px;
+	object-fit: contain;
+}
+.stylebox a {
+	color: #000;
+}
+/* styleDetail */
+.styleTitles {
+	text-align: center;
+}
+.styleTitles > * {
+	margin-bottom: 30px;
+}
+.styleTitles img {
+	width: 50%;
+}
+.stylecontent {
+	width: 80%;
+	margin: auto;
+}
+.stylecontent > * {
+	line-height: 30px;
+}

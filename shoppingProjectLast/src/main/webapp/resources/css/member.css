@@ -1,0 +1,102 @@
+@charset "UTF-8";
+.container {
+	min-height: 500px;
+}
+#myPageBtn {
+	text-align: center;
+}
+#myPageBtn > button {
+	margin: 5px;
+}
+#myPageBtn span {
+	font-size: 15px;
+}
+/* loginForm */
+#loginFormBox {
+	margin-top: 100px;
+	margin-bottom: 0;
+}
+
+/* memberForm */
+#joinInfo {
+	width: 70%;
+	margin: auto auto 40px auto;
+}
+#joinButtonBox {
+	text-align: center;
+}
+.joinCheckbox {
+	text-align: center;
+}
+/* mypageForm */
+.mypageBtn {
+	color: black;
+	font-size : 15px;
+}
+.postBtn {
+	background-color : gray;
+	color : black;
+}
+
+/* memberUpdate*/
+
+/* 회원 목록 */
+#memberListTable th, #memberListTable td{
+	text-align: center;
+}
+#memberListTable thead tr {
+	border-top: solid 2px black;
+}
+#listUpdateBtn {
+	background-color: #3c3c3c;
+	color: #FFF;
+}
+#listRemoveBtn {
+	background-color: #969696;
+	color: #FFF;
+}
+#membaerListSearchTable {
+	width: 100%;
+}
+#membaerListSearchTable tr > td {
+	text-align: center;
+}
+#membaerListSearchTable tr > td > * {
+	display: inline-block;
+}
+#membaerListSearchTable input {
+	border: none;
+	border-bottom: solid 2px black;
+	margin-left: 10px;
+	width: 350px;
+	height: 30px;
+}
+#membaerListSearchTable button {
+	background-color: #FFF;
+	border : none;
+	height: 30px;
+}
+
+/* myOrderPage */
+.nav-pills {
+	position: fixed;
+}
+.nav-pills a {
+	color: #000;
+}
+.nav-pills .active a {
+	background-color: #000 !important;
+}
+.pdMenufrm span {
+	font-size: 15px;
+	margin-right: 5px;
+}
+.pdMenufrm  p {
+	font-size: 15px;
+}
+.pdMenufrm button {
+	margin-left: 5px;
+}
+.pdMenufrm a {
+	color: #000;
+}

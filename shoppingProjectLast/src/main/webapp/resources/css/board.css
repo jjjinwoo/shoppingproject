@@ -1,0 +1,222 @@
+@charset "UTF-8";
+.container {
+	min-height: 500px;
+}
+
+/* 공통 타이틀 */
+#boardTitle {
+	margin-top: 60px;
+	margin-bottom: 70px;
+	text-align: center;
+}
+#boardTitle a {
+	font-size: 30px;
+	color: black;
+	margin: 0 20px 0 20px;
+	padding-bottom: 3px;
+}
+#boardTitle a:hover {
+	text-decoration: none;
+	border-bottom: 2px solid;
+}
+#selectedA {
+	border-bottom: 2px solid;
+	padding-bottom: 3px;
+}
+
+/* QnA List*/
+#registerBtnBox {
+	text-align: right;
+	margin-bottom: 20px;
+}
+#boardTable {
+	width: 100%;
+	margin-bottom: 40px;
+	border-top : 3px solid black;
+}
+#boardTable td {
+	border-bottom: 1px dotted #ccc;
+}
+#boardTable thead tr {
+	border-bottom: 1px solid #7f7f7f !important;
+}
+#boardTable tr {
+	height: 40px;
+}
+.boardNo {
+	width: 5%;
+	text-align: center;
+}
+.boardTitle {
+	width: 25%;
+}
+.boardTitle a {
+	color: #000;
+}
+#boardSearchBox {
+	text-align: center;
+}
+#boardSearchBox > * {
+	display: inline-block;
+}
+#searchType {
+	font-size: 13px;
+}
+#boardSearchBoxDiv {
+	border-bottom: 2px solid #7f7f7f;
+	margin-left: 10px;
+}
+#searchKeyword {
+	border:none;
+	width: 200px;
+}
+#searchBtn {
+	background-color: white;
+	border: none;
+	color: #5b5b5b;
+}
+
+/* boardDetail */
+#boardDetailListA {
+	text-align: right;
+}
+#boardDetailListA button {
+	background-color: #000;
+	color: #FFF;
+}
+#boardDetailTable {
+	width: 70%;
+	margin: auto auto 30px auto;
+}
+#boardDetailTable th {
+	padding-left: 10px;
+	padding-bottom: 10px;
+	font-size: 20px;
+}
+#boardDetailTable td > *{
+	display: inline-block;
+	color: #827f7f;
+}
+#boardDetailBtn {
+	text-align: center;
+}
+#boardDetailBtn button {
+	font-size: 15px !important;
+}
+#boardDetailBtn span {
+	font-size: 15px !important;
+}
+/* 댓글 부분 */
+#boardDetailCommentList {
+	width: 100%;
+}
+.comment15 {
+	width: 15%;
+}
+.commentLabel {
+	text-align: right;
+	vertical-align : top;
+	padding-right: 30px;
+}
+.comment70 {
+	width: 70%;
+}
+.comment70 table {
+	width: 100%;
+}
+.comment70 table tr {
+	border-bottom: 1px dotted #5a5a5c;
+}
+.comment70 table td {
+	padding: 15px 10px 15px 10px;
+}
+#commentDeleteA {
+	margin-left: 5px;
+}
+.comment15 table {
+	width: 100%;
+}
+.comment15 table tr {
+	border-bottom: 1px dotted #5a5a5c;
+}
+.comment15 table td {
+	padding: 15px 10px 15px 10px;
+}
+.commentButton {
+	width: 15%;
+}
+.commentButton button {
+	width: 80%;
+	height: 100%;
+}
+
+/* boardRegisterForm */
+
+#reviewSubjectBox {
+	width: 80%;
+}
+#reviewStarBox {
+	width: 15%;
+}
+#reviewOPDetail {
+	background-color: #f6f6f6;
+}
+#registerFormBtnDiv {
+	text-align: center;
+}
+/* boardUpdateForm */
+#boardUpdateBtn {
+	text-align: center;
+	margin-top: 40px;
+}
+#boardUpdateBtn span {
+	font-size: 15px;
+}
+
+/* boardListFqa */
+#fqaUl {
+	border-top: 3px solid gray;
+	border-bottom: 3px solid gray;
+}
+
+#fqaUl > li > a {
+	height: 50px;
+	font-size: 16px;
+	text-align: left;
+	width : 1200px;
+	padding-top: 15px;
+	padding-bottom: 5px;
+}
+.fqaUlLiA {
+	border-top : 1px solid gray;
+}
+#fqaUl p {
+	padding-left: 15px;
+}
+.fqaColorP {
+	color: #0078FF;
+}
+/* 리뷰 상세 페이지 reviewDetail */
+#reviewDetailOPImg img {
+	width: 80px;
+	padding-top: 10px;
+	padding-bottom: 10px;
+	padding-left: 10px;
+}
+#reviewDetailOP {
+	width: 90%;
+}
+#reviewDetailOP a {
+	display :block;
+	color: #000;
+	padding-left: 10px;
+}
+#reviewDetailOP p {
+	font-size: 12px;
+	display: inline-block;
+	padding-left: 10px;
+} 
+
+.dropdown-menufaq {
+   width:1201px;!important;
+}

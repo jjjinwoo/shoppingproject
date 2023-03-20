@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+      PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.edu.member">
+
+	<resultMap id = "memberResult" type = "com.edu.member.dto.MemberDTO">
+		<result property = "userID" column = "userID"/>
+		<result property = "pwd" column = "pwd"/>
+		<result property = "address1" column = "address1"/>
+		<result property = "address2" column = "address2"/>
+		<result property = "postnum" column = "postnum"/>
+		<result property = "name" column = "name"/>
+		<result property = "age" column = "age"/>
+		<result property = "phone" column = "phone"/>
+		<result property = "hp" column = "hp"/>
+		<result property = "gender" column = "gender"/>
+		<result property = "email" column = "email"/>
+		<result property = "joinDate" column = "joinDate"/>
+		<result property = "grade" column = "grade"/>
+	</resultMap>
+	
+	<!-- 로그인 처리 -->
+	<select id = "loginByID" parameterType="com.edu.member.dto.MemberDTO" resultType="com.edu.member.dto.MemberDTO">
+		<![CDATA[
+		SELECT * FROM t_member WHERE userID = #{userID};
+		]]>
+	</select>
+	
+	<!-- 회원 가입 처리 -->
+	<insert id="addMember" parameterType="com.edu.member.dto.MemberDTO">
+		<![CDATA[
+			INSERT INTO t_member 
+					(userID, 	pwd,  address1, address2, postnum, name, age, phone, gender, email, joinDate, grade)
+			VALUES	(#{userID},	#{pwd}, #{address1}, #{address2}, #{postnum}, #{name}, #{age}, #{phone}, #{gender}, #{email}, sysdate(), 0);
+		]]>
+	</insert>
+	
+	<!-- 아이디 중복 검사 : 입력한 아이디가 존재하는지 알아낸다. -->
+	<select id = "idCheck" parameterType = "com.edu.member.dto.MemberDTO" resultType ="Integer">
+		<![CDATA[
+			select count(*)
+			from t_member
+			where userID = #{userID}
+		]]>
+	</select>
+	
+	<!-- 마이페이지 아이디에 해당하는 마이페이지의 내용(비밀번호, 이름 등)을 수정 요청하기 -->
+	<update id="update">
+		<![CDATA[
+			UPDATE	t_member
+			SET		pwd = #{pwd}, address1 = #{address1}, address2 = #{address2}, postnum = #{postnum}, name = #{name}, age = #{age}, phone = #{phone}, gender = #{gender}, email = #{email}
+			WHERE	userID = #{userID}
+		]]>
+	</update>
+	
+	<!-- 아이디에 해당하는 회원 정보 삭제하기 -->
+	<delete id="deleteMember" parameterType="String">
+		<![CDATA[
+			DELETE FROM	t_member
+			WHERE	userID = #{userID}
+		]]>
+	</delete>
+	
+	<!-- ****************************************************************************************** -->
+	<!-- 조건에 해당하는 게시글 건수 가져오기 (Paging 3 처리) -->
+	<!-- ****************************************************************************************** -->
+	<select id="memberListTotalCountSearchType" parameterType="com.edu.common.util.SearchCriteria" resultType="Integer">
+		<![CDATA[
+			SELECT	COUNT(*)	FROM t_member
+			WHERE	1=1
+		]]>
+			<include refid="searchMySQL"/>
+	</select>
+	<!-- 검색 조건 -->
+	<!-- MySQL -->
+	<sql id="searchMySQL">
+		<if test="searchType != null">
+			<if test="searchType == 's'.toString()">AND userID LIKE CONCAT('%', #{keyword}, '%')</if>
+			<if test="searchType == 'a'.toString()">AND age LIKE CONCAT('%', #{keyword}, '%')</if>
+			<if test="searchType == 'g'.toString()">AND gender LIKE CONCAT('%', #{keyword}, '%')</if>
+		</if>
+	</sql>
+	
+	<!-- ****************************************************************************************** -->
+	<!-- 조건에 해당하는 게시글 목록 가져오기 (Paging 3 처리) -->
+	<!-- ****************************************************************************************** -->
+	<select id="memberListPagingSearchType" parameterType="hashmap" resultType="com.edu.member.dto.MemberDTO">
+	<![CDATA[
+		SELECT	userID, pwd, name, age , gender, email, joinDate, grade
+		FROM (
+			SELECT	userID, pwd, name, age , gender, email, joinDate, grade,
+				ROW_NUMBER() OVER(ORDER BY joinDate DESC) AS rNum
+			FROM	t_member
+			WHERE	1=1
+		]]>
+		<include refid="searchMySQL"/>
+		<![CDATA[
+			) brd
+			WHERE	rNum 	BETWEEN #{perPageNum} * #{page}-11
+					AND	#{perPageNum}*#{page}
+					AND grade = 0
+			ORDER BY joinDate DESC
+		]]>
+	</select>
+	
+	<!-- 아이디에 해당하는 회원 정보 조회 -->
+	<select id="selectMember" parameterType="String" resultType="com.edu.member.dto.MemberDTO">
+		<![CDATA[
+			SELECT * FROM t_member WHERE userID = #{userID}
+		]]>
+	</select>
+	
+		<!-- 아이디에 해당하는 회원 정보 수정하기 -->
+	<update id="updateMember" parameterType="com.edu.member.dto.MemberDTO">
+		<![CDATA[
+			UPDATE	t_member
+			SET		pwd = #{pwd}, address1 =#{address1}, address2=#{address2}, postnum=#{postnum},  name = #{name}, age=#{age}, phone=#{phone}, gender=#{gender},  email = #{email}
+			WHERE	userID = #{userID}
+		]]>
+	</update>
+	
+	
+</mapper>

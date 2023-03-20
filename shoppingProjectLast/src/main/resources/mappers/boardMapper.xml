@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+      PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.edu.main">
+
+	<!-- 검색 조건 -->
+	<sql id="searchMySQL">
+		<if test="searchType != null">
+			<if test="searchType == 's'.toString()">
+				AND qna_subject LIKE CONCAT('%', #{keyword}, '%')
+			</if>
+			<if test="searchType == 'c'.toString()">
+				AND qna_content LIKE CONCAT('%', #{keyword}, '%')
+			</if>
+			<if test="searchType == 'u'.toString()">
+				AND userID LIKE CONCAT('%', #{keyword}, '%')
+			</if>
+		</if>
+	</sql>
+	<!-- 게시글 목록 가져오기 -->
+	<select id="boardList" parameterType="com.edu.common.util.SearchCriteria" resultType="com.edu.board.dto.BoardDTO">
+		<![CDATA[
+			SELECT *
+			FROM (
+			SELECT qna_bno, qna_subject, qna_content, userID, qna_regDate, qna_readCount, ROW_NUMBER() OVER(ORDER BY qna_bno DESC) AS rNUM
+			FROM t_board WHERE 1=1
+			]]>
+			<include refid="searchMySQL"/>
+			<![CDATA[
+			) brd
+			WHERE rNUM BETWEEN (#{perPageNum} * #{page} - 11) and (#{perPageNum} * #{page})
+			ORDER BY qna_bno DESC;
+		]]>
+	</select>
+	
+	<!-- 게시글 총 갯수 가져오기 -->
+	<select id="totalCount" parameterType="com.edu.common.util.SearchCriteria" resultType="Integer">
+		<![CDATA[
+			SELECT COUNT(*)
+			FROM t_board where 1 = 1
+		]]>
+		<include refid="searchMySQL"/>
+	</select>
+	
+	<!-- 게시글 전체 리스트 가져오기 -->
+	<select id="totalList" resultType="com.edu.board.dto.BoardDTO">
+		<![CDATA[
+			SELECT * FROM t_board ORDER BY qna_bno DESC;
+		]]>		
+	</select>
+	
+	<!-- qna 해당 아이디 게시글 전체 리스트 가져오기 -->
+	<select id="boardUserList" resultType="com.edu.board.dto.BoardDTO" parameterType="String">
+		<![CDATA[
+			SELECT * FROM t_board WHERE userID=#{userID} ORDER BY qna_bno DESC;
+		]]>
+	</select>
+	
+	<!-- 게시글 등록 처리하기 -->
+	<insert id="boardRegister" parameterType="com.edu.board.dto.BoardDTO">
+		<![CDATA[
+			INSERT INTO t_board (qna_bno, qna_subject, qna_content, userID, qna_regDate, qna_readCount)
+			SELECT IFNULL(MAX(qna_bno), 0) + 1, #{qna_subject}, #{qna_content}, #{userID}, now(), 0 FROM t_board;
+		]]>
+	</insert>
+	
+	<!-- qna_bno에 해당하는 게시글 조회수 증가시키기 -->
+	<update id="updateReadCount" parameterType="int">
+		<![CDATA[
+		UPDATE t_board SET qna_readCount = qna_readCount + 1 WHERE qna_bno = #{qna_bno};
+		]]>
+	</update>
+	
+	<!-- qna_bno에 해당하는 상세 정보 가져오기 -->
+	<select id="detail"  parameterType="int" resultType="com.edu.board.dto.BoardDTO">
+		<![CDATA[
+		SELECT * FROM t_board WHERE qna_bno = #{qna_bno};
+		]]>
+	</select>	
+	
+	<!-- qna_bno에 해당하는 게시글 삭제하기 -->
+	<delete id="delete" parameterType="int">
+		<![CDATA[
+		DELETE FROM t_board WHERE qna_bno = #{qna_bno};
+		]]>
+	</delete>
+	
+	<!-- qna_bno에 해당하는 게시글 수정하기 -->
+	<update id="update" parameterType="com.edu.board.dto.BoardDTO">
+		<![CDATA[
+		UPDATE t_board SET qna_subject = #{qna_subject}, userID = #{userID}, qna_content = #{qna_content}, qna_regDate = now() WHERE qna_bno = #{qna_bno};
+		]]>
+	</update>		
+	
+	<!-- qna_bno에 해당하는 댓글 갯수 구하기 -->
+	<select id="commentCount" parameterType="Integer" resultType="Integer">
+		<![CDATA[
+			SELECT COUNT(*) FROM t_comment WHERE qna_bno = #{qna_bno}
+		]]>
+	</select>
+	
+	<!-- qna_bno에 해당하는 댓글 목록 가져오기 -->
+	<select id="commentList" parameterType="Integer" resultType="com.edu.board.dto.CommentDTO">
+		<![CDATA[
+			SELECT * FROM t_comment WHERE qna_bno = #{qna_bno}
+		]]>
+	</select>
+	
+	<!-- qna_bno에 해당하는 댓글 등록하기 -->
+	<insert id="commentRegister" parameterType="com.edu.board.dto.CommentDTO">
+		<![CDATA[
+			INSERT INTO t_comment (reply_bno, qna_bno, reply_content, reply_regDate)
+			SELECT IFNULL(MAX(reply_bno), 0) + 1, #{qna_bno}, #{reply_content}, now() FROM t_comment;
+		]]>		
+	</insert>
+	
+	<!-- reply_bno에 해당하는 댓글 삭제하기 -->
+	<delete id="replyDelete" parameterType="int">
+		<![CDATA[
+		DELETE FROM t_comment WHERE reply_bno = #{reply_bno};
+		]]>
+	</delete>
+</mapper>   
+
+
+
+
+
